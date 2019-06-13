@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<body>
+
+</body>
+
+<script>
+  const n = 16;
+  const balls = new Array(n).fill(1).map( (d, i) => { return i+1; } );
+  var current_balls = balls;
+  const k = 2*Math.PI/n;
+  const R = 40, r = R/10;
+  const w = 100, h = 100;
+  var index = 0;
+
+  var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
+  var circles = svg.append("g").attr("id", "groupOfBalls")
+    .selectAll("cirle")
+      .data(balls)
+    .enter().append("circle")
+      .attr("cx", (d) => { return w/2 - R*Math.cos((d-1)*k); })
+      .attr("cy", (d) => { return h/2 - R*Math.sin((d-1)*k); })
+      .attr("r",  r)
+      .attr("fill", "blue")
+
+  d3.select("circle:nth-child(" + balls[index] + ")").attr("fill", "green");
+
+  const move = function() {
+    let l = current_balls.length;
+    if ( l === 1 ) {
+      return false;
+    } else {
+      let active_ball = current_balls[index];
+      index = (index+1) % l;
+      let dismissed_ball = current_balls.splice(index, 1)[0];
+      l--;
+      index = index % l;
+      let next_active_ball = current_balls[index];
+      d3.select("circle:nth-child(" + active_ball + ")").attr("fill", "blue");
+      d3.select("circle:nth-child(" + dismissed_ball + ")").attr("fill", "red");
+      d3.select("circle:nth-child(" + next_active_ball + ")").attr("fill", "green");
+      return true;
+    }
+  }
+
+  const play = function() {
+    setTimeout( () => { 
+      if (move()) {
+        play();
+      } else {
+        console.log("winner");
+      } 
+    }, 1000 );
+  }
+
+  play();
+</script>

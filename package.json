@@ -1,0 +1,15 @@
+{
+  "name": "d3",
+  "version": "1.0.0",
+  "description": "d3 mini projects",
+  "main": "index.js",
+  "dependencies": {
+    "d3": "^5.9.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Johannes Nam",
+  "license": "ISC"
+}
